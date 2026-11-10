@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e1116">
+  <meta name="description" content="드러켄밀러식 유동성·시장 신호 대시보드">
+  <title>유동성 나침반</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>유동성 나침반</h1>
+      <p class="sub" id="asof">불러오는 중…</p>
+    </div>
+    <div class="top-actions">
+      <button id="installBtn" class="ghost" hidden>설치</button>
+      <button id="refreshBtn" class="ghost" aria-label="새로고침">↻</button>
+    </div>
+  </header>
+
+  <main id="app">
+    <section class="card hero">
+      <svg id="gauge" viewBox="0 0 200 120" aria-hidden="true"></svg>
+      <div class="hero-text">
+        <div id="regime" class="regime">—</div>
+        <p id="regimeDesc" class="muted"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>드러켄밀러라면</h2>
+      <p id="stance" class="stance"></p>
+      <p id="leadership" class="chip-line"></p>
+      <p id="koreaLine" class="chip-line"></p>
+    </section>
+
+    <section class="card">
+      <h2>우호 신호</h2>
+      <ul id="supports" class="sig-list good"></ul>
+      <h2>경고 신호</h2>
+      <ul id="risks" class="sig-list bad"></ul>
+      <h2>지켜볼 것</h2>
+      <ul id="watch" class="sig-list neutral"></ul>
+    </section>
+
+    <section class="card">
+      <h2>종합 점수 추이 <span class="muted small">(2년, 주간)</span></h2>
+      <div id="scoreChart" class="chart"></div>
+    </section>
+
+    <section class="card">
+      <h2>순유동성 vs S&P500 <span class="muted small">(3년)</span></h2>
+      <div id="liqChart" class="chart"></div>
+      <div class="legend"><span class="lg lg-a"></span>순유동성 <span class="lg lg-b"></span>SPY</div>
+    </section>
+
+    <section class="card">
+      <h2>업종 상대강도 <span class="muted small">(3개월, SPY 대비)</span></h2>
+      <div id="rsChart"></div>
+    </section>
+
+    <section id="pillars"></section>
+
+    <section class="card">
+      <h2>🇰🇷 한국 시장 <span id="koreaScore" class="pill"></span></h2>
+      <ul id="koreaList" class="ind-list"></ul>
+    </section>
+
+    <p class="disclaimer">
+      공개 데이터(FRED·Yahoo Finance)를 규칙에 따라 점수화한 참고 자료이며 투자 조언이 아닙니다.
+      드러켄밀러 본인의 판단·포지션과는 관계없습니다.
+    </p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
