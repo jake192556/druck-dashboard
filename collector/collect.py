@@ -12,9 +12,11 @@
 """
 from __future__ import annotations
 
+import contextlib
 import io
 import json
 import os
+import signal
 import sys
 import time
 import datetime as dt
@@ -32,60 +34,136 @@ START = "2018-01-01"
 
 
 # ---------------------------------------------------------------- fetch
-def fetch_fred(series_id: str) -> pd.Series:
+class HardTimeout(Exception):
+    pass
+
+
+@contextlib.contextmanager
+def hard_timeout(seconds: int, label: str):
+    """응답 없이 멈춘 네트워크 호출도 강제로 끊는다 (Linux 전용, 메인 스레드)."""
+    if not hasattr(signal, "SIGALRM"):
+        yield
+        return
+
+    def _raise(signum, frame):
+        raise HardTimeout(f"{label}: {seconds}초 초과")
+
+    old = signal.signal(signal.SIGALRM, _raise)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, old)
+
+
+def _fred_api(series_id: str, key: str) -> pd.Series:
     import requests
+    r = requests.get(
+        "https://api.stlouisfed.org/fred/series/observations",
+        params={"series_id": series_id, "api_key": key,
+                "file_type": "json", "observation_start": START},
+        timeout=(5, 20),
+    )
+    r.raise_for_status()
+    obs = r.json()["observations"]
+    return pd.Series({pd.Timestamp(o["date"]): float(o["value"]) for o in obs if o["value"] not in (".", "")})
+
+
+def _fred_csv(series_id: str) -> pd.Series:
+    import requests
+    r = requests.get(
+        "https://fred.stlouisfed.org/graph/fredgraph.csv",
+        params={"id": series_id, "cosd": START}, timeout=(5, 20),
+        headers={"User-Agent": "Mozilla/5.0"},
+    )
+    r.raise_for_status()
+    df = pd.read_csv(io.StringIO(r.text))
+    return pd.Series(pd.to_numeric(df.iloc[:, 1], errors="coerce").values, index=pd.to_datetime(df.iloc[:, 0]))
+
+
+def fetch_fred(series_id: str) -> pd.Series:
     key = os.getenv("FRED_API_KEY")
-    for attempt in range(3):
-        try:
-            if key:
-                r = requests.get(
-                    "https://api.stlouisfed.org/fred/series/observations",
-                    params={"series_id": series_id, "api_key": key,
-                            "file_type": "json", "observation_start": START},
-                    timeout=30,
-                )
-                r.raise_for_status()
-                obs = r.json()["observations"]
-                s = pd.Series(
-                    {pd.Timestamp(o["date"]): float(o["value"]) for o in obs if o["value"] not in (".", "")}
-                )
-            else:
-                r = requests.get(
-                    "https://fred.stlouisfed.org/graph/fredgraph.csv",
-                    params={"id": series_id, "cosd": START}, timeout=30,
-                    headers={"User-Agent": "Mozilla/5.0"},
-                )
-                r.raise_for_status()
-                df = pd.read_csv(io.StringIO(r.text))
-                s = pd.Series(pd.to_numeric(df.iloc[:, 1], errors="coerce").values,
-                              index=pd.to_datetime(df.iloc[:, 0]))
-            return s.dropna().sort_index()
-        except Exception as e:  # noqa: BLE001
-            print(f"  FRED {series_id} 재시도 {attempt + 1}: {e}")
-            time.sleep(2 + attempt * 3)
-    raise RuntimeError(f"FRED {series_id} 실패")
+    sources = ([("API", lambda: _fred_api(series_id, key))] if key else []) + [("CSV", lambda: _fred_csv(series_id))]
+    errors = []
+    for name, fn in sources:
+        for attempt in range(2):
+            try:
+                with hard_timeout(35, f"FRED {series_id} {name}"):
+                    s = fn()
+                s = s.dropna().sort_index()
+                if len(s):
+                    return s
+                raise ValueError("빈 데이터")
+            except Exception as e:  # noqa: BLE001
+                errors.append(f"{name}#{attempt + 1}: {e}")
+                print(f"  FRED {series_id} {name} 실패 {attempt + 1}: {e}", flush=True)
+                time.sleep(2)
+    raise RuntimeError("; ".join(errors[-2:]))
 
 
-def fetch_prices(tickers: list[str]) -> pd.DataFrame:
-    import yfinance as yf
-    df = yf.download(tickers, period="4y", auto_adjust=True, progress=False, threads=True)
-    close = df["Close"] if isinstance(df.columns, pd.MultiIndex) else df[["Close"]].rename(columns={"Close": tickers[0]})
+def _close_frame(df: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
+    if df is None or df.empty:
+        return pd.DataFrame()
+    if isinstance(df.columns, pd.MultiIndex):
+        close = df["Close"]
+    else:
+        close = df[["Close"]].rename(columns={"Close": tickers[0]})
     close.index = pd.to_datetime(close.index).tz_localize(None)
     return close.dropna(how="all")
 
 
+def fetch_prices(tickers: list[str], budget_end: float) -> pd.DataFrame:
+    import yfinance as yf
+    close = pd.DataFrame()
+    try:
+        with hard_timeout(150, "yfinance 일괄"):
+            df = yf.download(tickers, period="4y", auto_adjust=True, progress=False, threads=True, timeout=20)
+        close = _close_frame(df, tickers)
+    except Exception as e:  # noqa: BLE001
+        print(f"  yfinance 일괄 다운로드 실패: {e}", flush=True)
+
+    # 빠진 종목만 하나씩 다시 받기 (시간 예산 안에서)
+    for t in tickers:
+        if t in close and close[t].dropna().size:
+            continue
+        if time.time() > budget_end:
+            print("  시간 예산 소진 → 남은 종목 생략", flush=True)
+            break
+        try:
+            with hard_timeout(30, f"yfinance {t}"):
+                df = yf.download(t, period="4y", auto_adjust=True, progress=False, threads=False, timeout=15)
+            one = _close_frame(df, [t])
+            if not one.empty:
+                s = one.iloc[:, 0].rename(t)
+                close = s.to_frame() if close.empty else close.drop(columns=[t], errors="ignore").join(s, how="outer")
+                print(f"  {t} 재시도 성공", flush=True)
+        except Exception as e:  # noqa: BLE001
+            print(f"  {t} 실패: {e}", flush=True)
+    return close.sort_index()
+
+
 def load_real():
+    t0 = time.time()
     fred, failed = {}, []
     for sid in engine.FRED_SERIES:
+        if time.time() - t0 > 240:
+            failed.append(sid)
+            print(f"  FRED 시간 예산 소진 → {sid} 생략", flush=True)
+            continue
         try:
             fred[sid] = fetch_fred(sid)
-            print(f"  FRED {sid}: {len(fred[sid])}개, 최근 {fred[sid].index[-1].date()}")
+            print(f"  FRED {sid}: {len(fred[sid])}개, 최근 {fred[sid].index[-1].date()}", flush=True)
         except Exception as e:  # noqa: BLE001
             failed.append(sid)
-            print(f"  FRED {sid} 건너뜀: {e}")
-    px = fetch_prices(engine.PRICE_TICKERS)
+            print(f"  FRED {sid} 건너뜀: {e}", flush=True)
+    print(f"  FRED 완료 ({time.time() - t0:.0f}초)", flush=True)
+
+    px = fetch_prices(engine.PRICE_TICKERS, budget_end=time.time() + 300)
+    if px.empty:
+        raise RuntimeError("가격 데이터를 하나도 받지 못했습니다 (Yahoo Finance 차단/장애 가능).")
     missing = [t for t in engine.PRICE_TICKERS if t not in px or px[t].dropna().empty]
-    print(f"  가격 {px.shape[1]}종목, 최근 {px.index[-1].date()}, 누락 {missing}")
+    print(f"  가격 {px.shape[1]}종목, 최근 {px.index[-1].date()}, 누락 {missing} ({time.time() - t0:.0f}초)", flush=True)
     return fred, px, failed + missing
 
 
