@@ -5,6 +5,11 @@ on:
     # 미국장 마감 후: 화~토 07:10 KST (= 월~금 22:10 UTC)
     - cron: "10 22 * * 1-5"
   workflow_dispatch: {}   # Actions 탭에서 수동 실행 가능
+  push:                   # 수집 코드나 워크플로를 고치면 자동 실행
+    branches: [main]
+    paths:
+      - "collector/**"
+      - ".github/workflows/**"
 
 permissions:
   contents: write
