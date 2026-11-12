@@ -1,6 +1,6 @@
 {
- "asof": "2026-11-11",
- "score": -4,
+ "asof": "2026-11-12",
+ "score": -7,
  "regime": {
   "key": "neutral",
   "label": "중립",
@@ -111,8 +111,8 @@
      "name": "하이일드채 vs 국채 (HYG/IEF)",
      "value": null,
      "unit": "",
-     "change": -0.68,
-     "change_label": "3개월 상대 -0.7%p",
+     "change": -0.075,
+     "change_label": "3개월 상대 -0.1%p",
      "signal": 0,
      "note": "중립",
      "info": false
@@ -135,7 +135,7 @@
    "id": "internals",
    "name": "시장 내부 신호",
    "weight": 0.25,
-   "score": -25,
+   "score": -38,
    "indicators": [
     {
      "id": "rs_KRE",
@@ -143,8 +143,8 @@
      "name": "지역은행 (KRE) vs S&P500",
      "value": null,
      "unit": "",
-     "change": -2.325,
-     "change_label": "3개월 상대 -2.3%p",
+     "change": -3.559,
+     "change_label": "3개월 상대 -3.6%p",
      "signal": -1,
      "note": "시장보다 약함",
      "info": false
@@ -155,8 +155,8 @@
      "name": "운송 (IYT) vs S&P500",
      "value": null,
      "unit": "",
-     "change": -0.702,
-     "change_label": "3개월 상대 -0.7%p",
+     "change": -1.844,
+     "change_label": "3개월 상대 -1.8%p",
      "signal": 0,
      "note": "시장과 비슷",
      "info": false
@@ -167,10 +167,10 @@
      "name": "주택건설 (XHB) vs S&P500",
      "value": null,
      "unit": "",
-     "change": -1.568,
-     "change_label": "3개월 상대 -1.6%p",
-     "signal": 0,
-     "note": "시장과 비슷",
+     "change": -3.264,
+     "change_label": "3개월 상대 -3.3%p",
+     "signal": -1,
+     "note": "시장보다 약함",
      "info": false
     },
     {
@@ -179,8 +179,8 @@
      "name": "소매 (XRT) vs S&P500",
      "value": null,
      "unit": "",
-     "change": 7.023,
-     "change_label": "3개월 상대 +7.0%p",
+     "change": 5.749,
+     "change_label": "3개월 상대 +5.7%p",
      "signal": 1,
      "note": "시장보다 강함",
      "info": false
@@ -191,8 +191,8 @@
      "name": "반도체 (SMH) vs S&P500",
      "value": null,
      "unit": "",
-     "change": -14.624,
-     "change_label": "3개월 상대 -14.6%p",
+     "change": -11.866,
+     "change_label": "3개월 상대 -11.9%p",
      "signal": -1,
      "note": "시장보다 약함",
      "info": false
@@ -203,7 +203,7 @@
      "name": "소형주 (IWM) vs S&P500",
      "value": null,
      "unit": "",
-     "change": -4.388,
+     "change": -4.401,
      "change_label": "3개월 상대 -4.4%p",
      "signal": -1,
      "note": "시장보다 약함",
@@ -215,8 +215,8 @@
      "name": "경기소비재 vs 필수소비재",
      "value": null,
      "unit": "",
-     "change": -4.79,
-     "change_label": "3개월 상대 -4.8%p",
+     "change": -4.667,
+     "change_label": "3개월 상대 -4.7%p",
      "signal": -1,
      "note": "방어주로 이동 — 경기 둔화 우려",
      "info": false
@@ -227,8 +227,8 @@
      "name": "구리/금 비율",
      "value": null,
      "unit": "",
-     "change": 3.739,
-     "change_label": "3개월 상대 +3.7%p",
+     "change": 4.586,
+     "change_label": "3개월 상대 +4.6%p",
      "signal": 1,
      "note": "실물경기 기대 상승",
      "info": false
@@ -245,10 +245,10 @@
      "id": "trend_SPY",
      "pillar": "trend",
      "name": "S&P500 추세",
-     "value": 749.92,
+     "value": 759.81,
      "unit": "",
-     "change": 2.968,
-     "change_label": "200일선 대비 +3.0%",
+     "change": 4.276,
+     "change_label": "200일선 대비 +4.3%",
      "signal": 1,
      "note": "200일선 위 + 200일선 상승 — 상승 추세",
      "info": false
@@ -259,8 +259,8 @@
      "name": "50일선 vs 200일선",
      "value": null,
      "unit": "",
-     "change": 4.977,
-     "change_label": "격차 +5.0%",
+     "change": 4.927,
+     "change_label": "격차 +4.9%",
      "signal": 1,
      "note": "골든크로스 상태",
      "info": false
@@ -271,8 +271,8 @@
      "name": "시장 폭 (동일가중 vs 시총가중)",
      "value": null,
      "unit": "",
-     "change": 2.966,
-     "change_label": "3개월 상대 +3.0%p",
+     "change": 2.42,
+     "change_label": "3개월 상대 +2.4%p",
      "signal": 1,
      "note": "상승이 넓게 퍼짐",
      "info": false
@@ -287,10 +287,10 @@
     "id": "trend_^KS11",
     "pillar": "korea",
     "name": "코스피 추세",
-    "value": 5375.36,
+    "value": 5453.82,
     "unit": "",
-    "change": -17.533,
-    "change_label": "200일선 대비 -17.5%",
+    "change": -16.369,
+    "change_label": "200일선 대비 -16.4%",
     "signal": 0,
     "note": "추세 전환 구간",
     "info": false
@@ -299,10 +299,10 @@
     "id": "trend_^KQ11",
     "pillar": "korea",
     "name": "코스닥 추세",
-    "value": 705.1,
+    "value": 705.58,
     "unit": "",
-    "change": -26.728,
-    "change_label": "200일선 대비 -26.7%",
+    "change": -26.584,
+    "change_label": "200일선 대비 -26.6%",
     "signal": -1,
     "note": "200일선 아래 + 200일선 하락 — 하락 추세",
     "info": false
@@ -311,9 +311,9 @@
     "id": "usdkrw",
     "pillar": "korea",
     "name": "원/달러 환율",
-    "value": 1334.8,
+    "value": 1332.98,
     "unit": "원",
-    "change": -5.791,
+    "change": -5.821,
     "change_label": "3개월 -5.8%",
     "signal": 1,
     "note": "원화 강세 — 외국인 자금 유입에 우호",
@@ -325,8 +325,8 @@
     "name": "한국 vs 신흥국 (EWY/EEM)",
     "value": null,
     "unit": "",
-    "change": -12.0,
-    "change_label": "3개월 상대 -12.0%p",
+    "change": -10.29,
+    "change_label": "3개월 상대 -10.3%p",
     "signal": -1,
     "note": "한국 소외",
     "info": false
@@ -334,21 +334,21 @@
   ]
  },
  "brief": {
-  "headline": "종합 -4점 · 중립",
+  "headline": "종합 -7점 · 중립",
   "stance": "시장은 강하지만 유동성은 역풍입니다. 추세는 따라가되 손절 기준을 엄격히 하고 레버리지는 피합니다.",
   "leadership": "주도: 소매, 운송 / 부진: 반도체",
   "korea": "한국 시장 신호 엇갈림",
   "supports": [
    "M2 통화량 (전년비): YoY +5.7% — 통화량 빠르게 증가",
-   "소매 (XRT) vs S&P500: 3개월 상대 +7.0%p — 시장보다 강함",
-   "구리/금 비율: 3개월 상대 +3.7%p — 실물경기 기대 상승",
-   "S&P500 추세: 200일선 대비 +3.0% — 200일선 위 + 200일선 상승 — 상승 추세"
+   "소매 (XRT) vs S&P500: 3개월 상대 +5.7%p — 시장보다 강함",
+   "구리/금 비율: 3개월 상대 +4.6%p — 실물경기 기대 상승",
+   "S&P500 추세: 200일선 대비 +4.3% — 200일선 위 + 200일선 상승 — 상승 추세"
   ],
   "risks": [
    "연방기금금리 방향: 3개월 +25bp — 연준이 금리를 올리는 중",
    "하이일드 신용 스프레드: 3개월 +64bp · 5년 백분위 83% (낮을수록 양호) — 신용 스트레스 확대 — 주식보다 먼저 경고하는 경우 많음",
    "달러지수 (광의): 3개월 +2.4% — 달러 강세 — 글로벌 유동성 긴축",
-   "지역은행 (KRE) vs S&P500: 3개월 상대 -2.3%p — 시장보다 약함"
+   "지역은행 (KRE) vs S&P500: 3개월 상대 -3.6%p — 시장보다 약함"
   ],
   "watch": [
    "순유동성 (연준자산−TGA−역레포): 13주 -4B (-0.1%) — 유동성 큰 변화 없음",
@@ -356,7 +356,7 @@
    "10년 실질금리: 3개월 +23bp — 실질금리 횡보"
   ]
  },
- "generated_at": "2026-11-11T09:43+00:00",
+ "generated_at": "2026-11-12T02:55+00:00",
  "sample": false,
  "missing": [],
  "charts": {
@@ -1557,54 +1557,54 @@
    [
     "2026-11-11",
     5790.8,
-    749.92
+    759.81
    ]
   ],
   "relative": [
    {
     "ticker": "XLP",
     "name": "필수소비재",
-    "rel": 10.38
+    "rel": 9.12
    },
    {
     "ticker": "XRT",
     "name": "소매",
-    "rel": 7.02
+    "rel": 5.75
    },
    {
     "ticker": "XLY",
     "name": "경기소비재",
-    "rel": 5.59
+    "rel": 4.45
    },
    {
     "ticker": "RSP",
     "name": "동일가중",
-    "rel": 2.97
+    "rel": 2.42
    },
    {
     "ticker": "IYT",
     "name": "운송",
-    "rel": -0.7
+    "rel": -1.84
    },
    {
     "ticker": "XHB",
     "name": "주택건설",
-    "rel": -1.57
+    "rel": -3.26
    },
    {
     "ticker": "KRE",
     "name": "지역은행",
-    "rel": -2.33
+    "rel": -3.56
    },
    {
     "ticker": "IWM",
     "name": "소형주",
-    "rel": -4.39
+    "rel": -4.4
    },
    {
     "ticker": "SMH",
     "name": "반도체",
-    "rel": -14.62
+    "rel": -11.87
    }
   ]
  }
