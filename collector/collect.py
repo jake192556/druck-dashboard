@@ -259,6 +259,11 @@ def main():
     if prev and prev.get("sample"):
         prev = None  # 샘플 데이터와는 비교하지 않음
 
+    if (prev and not sample and prev.get("asof") == result["asof"]
+            and prev.get("score") == result["score"] and not result["missing"]):
+        print(f"이미 최신 ({result['asof']}) → 저장 생략")
+        return
+
     latest.write_text(json.dumps(result, ensure_ascii=False, indent=1), "utf-8")
     print(f"저장: {latest}  →  {result['brief']['headline']}")
 
