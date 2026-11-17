@@ -2,8 +2,11 @@ name: update-data
 
 on:
   schedule:
-    # 미국장 마감 후: 화~토 07:10 KST (= 월~금 22:10 UTC)
-    - cron: "10 22 * * 1-5"
+    # 미국장 마감 후 화~토. GitHub 예약 실행은 몇 시간씩 밀리거나 빠지기도 해서 예비 실행을 둔다.
+    # 이미 최신이면 커밋·알림 없이 끝난다.
+    - cron: "37 21 * * 1-5"   # 06:37 KST
+    - cron: "47 23 * * 1-5"   # 08:47 KST (예비)
+    - cron: "23 2 * * 2-6"    # 11:23 KST (예비)
   workflow_dispatch: {}   # Actions 탭에서 수동 실행 가능
   push:                   # 수집 코드나 워크플로를 고치면 자동 실행
     branches: [main]
