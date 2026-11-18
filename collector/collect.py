@@ -259,13 +259,6 @@ def main():
     if prev and prev.get("sample"):
         prev = None  # 샘플 데이터와는 비교하지 않음
 
-    def _fingerprint(d):
-        return json.dumps({k: v for k, v in d.items() if k != "generated_at"}, sort_keys=True, ensure_ascii=False)
-
-    if prev and not sample and _fingerprint(prev) == _fingerprint(result):
-        print(f"데이터 변화 없음 ({result['asof']}) → 저장 생략")
-        return
-
     latest.write_text(json.dumps(result, ensure_ascii=False, indent=1), "utf-8")
     print(f"저장: {latest}  →  {result['brief']['headline']}")
 
