@@ -386,12 +386,17 @@ def _regime(score: float):
 
 def evaluate(fred: dict, px: pd.DataFrame, asof=None) -> dict:
     if asof is None:
-        dates = [s.index[-1] for s in fred.values() if s is not None and len(s)]
-        if len(px):
-            dates.append(px.index[-1])
-        asof = max(dates)
+        # 기준일 = 미국장 마지막 거래일 (한국장은 시차 때문에 하루 앞서 있을 수 있음)
+        if "SPY" in px and px["SPY"].dropna().size:
+            asof = px["SPY"].dropna().index[-1]
+        else:
+            dates = [s.index[-1] for s in fred.values() if s is not None and len(s)]
+            if len(px):
+                dates.append(px.index[-1])
+            asof = max(dates)
     asof = pd.Timestamp(asof)
     pxa = px[px.index <= asof]
+    pxk = px[px.index <= asof + pd.Timedelta(days=1)]  # 한국장: 미국 기준일 다음 날 장까지
 
     groups = {
         "liquidity": _liquidity(fred, asof),
@@ -412,7 +417,7 @@ def evaluate(fred: dict, px: pd.DataFrame, asof=None) -> dict:
             den += w
     total = round(num / den * 100) if den else 0
 
-    korea = _korea(pxa)
+    korea = _korea(pxk)
     ksc = _pillar_score(korea)
 
     return {
