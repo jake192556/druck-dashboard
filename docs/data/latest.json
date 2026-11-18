@@ -227,8 +227,8 @@
      "name": "구리/금 비율",
      "value": null,
      "unit": "",
-     "change": 8.072,
-     "change_label": "3개월 상대 +8.1%p",
+     "change": 8.044,
+     "change_label": "3개월 상대 +8.0%p",
      "signal": 1,
      "note": "실물경기 기대 상승",
      "info": false
@@ -287,10 +287,10 @@
     "id": "trend_^KS11",
     "pillar": "korea",
     "name": "코스피 추세",
-    "value": 4977.84,
+    "value": 4959.81,
     "unit": "",
-    "change": -23.701,
-    "change_label": "200일선 대비 -23.7%",
+    "change": -23.976,
+    "change_label": "200일선 대비 -24.0%",
     "signal": 0,
     "note": "추세 전환 구간",
     "info": false
@@ -299,10 +299,10 @@
     "id": "trend_^KQ11",
     "pillar": "korea",
     "name": "코스닥 추세",
-    "value": 652.07,
+    "value": 647.46,
     "unit": "",
-    "change": -31.722,
-    "change_label": "200일선 대비 -31.7%",
+    "change": -32.203,
+    "change_label": "200일선 대비 -32.2%",
     "signal": -1,
     "note": "200일선 아래 + 200일선 하락 — 하락 추세",
     "info": false
@@ -311,9 +311,9 @@
     "id": "usdkrw",
     "pillar": "korea",
     "name": "원/달러 환율",
-    "value": 1328.88,
+    "value": 1328.68,
     "unit": "원",
-    "change": -4.451,
+    "change": -4.466,
     "change_label": "3개월 -4.5%",
     "signal": 1,
     "note": "원화 강세 — 외국인 자금 유입에 우호",
@@ -341,7 +341,7 @@
   "supports": [
    "M2 통화량 (전년비): YoY +5.7% — 통화량 빠르게 증가",
    "소매 (XRT) vs S&P500: 3개월 상대 +4.1%p — 시장보다 강함",
-   "구리/금 비율: 3개월 상대 +8.1%p — 실물경기 기대 상승",
+   "구리/금 비율: 3개월 상대 +8.0%p — 실물경기 기대 상승",
    "S&P500 추세: 200일선 대비 +0.4% — 200일선 위 + 200일선 상승 — 상승 추세"
   ],
   "risks": [
@@ -356,7 +356,7 @@
    "하이일드채 vs 국채 (HYG/IEF): 3개월 상대 -0.2%p — 중립"
   ]
  },
- "generated_at": "2026-11-18T02:36+00:00",
+ "generated_at": "2026-11-18T02:38+00:00",
  "sample": false,
  "missing": [],
  "charts": {
@@ -1107,7 +1107,7 @@
    [
     "2025-02-26",
     5958.9,
-    583.08
+    583.09
    ],
    [
     "2025-03-05",
