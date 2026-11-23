@@ -12,7 +12,8 @@ on:
     branches: [main]
     paths:
       - "collector/**"
-      - ".github/workflows/**"
+      - "!collector/backtest.py"
+      - ".github/workflows/update.yml"
 
 permissions:
   contents: write

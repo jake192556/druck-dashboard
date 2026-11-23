@@ -113,12 +113,12 @@ def _close_frame(df: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
     return close.dropna(how="all")
 
 
-def fetch_prices(tickers: list[str], budget_end: float) -> pd.DataFrame:
+def fetch_prices(tickers: list[str], budget_end: float, period: str = "4y") -> pd.DataFrame:
     import yfinance as yf
     close = pd.DataFrame()
     try:
         with hard_timeout(150, "yfinance 일괄"):
-            df = yf.download(tickers, period="4y", auto_adjust=True, progress=False, threads=True, timeout=20)
+            df = yf.download(tickers, period=period, auto_adjust=True, progress=False, threads=True, timeout=20)
         close = _close_frame(df, tickers)
     except Exception as e:  # noqa: BLE001
         print(f"  yfinance 일괄 다운로드 실패: {e}", flush=True)
@@ -132,7 +132,7 @@ def fetch_prices(tickers: list[str], budget_end: float) -> pd.DataFrame:
             break
         try:
             with hard_timeout(30, f"yfinance {t}"):
-                df = yf.download(t, period="4y", auto_adjust=True, progress=False, threads=False, timeout=15)
+                df = yf.download(t, period=period, auto_adjust=True, progress=False, threads=False, timeout=15)
             one = _close_frame(df, [t])
             if not one.empty:
                 s = one.iloc[:, 0].rename(t)
