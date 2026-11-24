@@ -287,10 +287,10 @@
     "id": "trend_^KS11",
     "pillar": "korea",
     "name": "코스피 추세",
-    "value": 5047.13,
+    "value": 5006.03,
     "unit": "",
-    "change": -22.619,
-    "change_label": "200일선 대비 -22.6%",
+    "change": -23.246,
+    "change_label": "200일선 대비 -23.2%",
     "signal": 0,
     "note": "추세 전환 구간",
     "info": false
@@ -299,10 +299,10 @@
     "id": "trend_^KQ11",
     "pillar": "korea",
     "name": "코스닥 추세",
-    "value": 668.13,
+    "value": 665.88,
     "unit": "",
-    "change": -29.439,
-    "change_label": "200일선 대비 -29.4%",
+    "change": -29.675,
+    "change_label": "200일선 대비 -29.7%",
     "signal": -1,
     "note": "200일선 아래 + 200일선 하락 — 하락 추세",
     "info": false
@@ -311,10 +311,10 @@
     "id": "usdkrw",
     "pillar": "korea",
     "name": "원/달러 환율",
-    "value": 1342.14,
+    "value": 1343.85,
     "unit": "원",
-    "change": -2.989,
-    "change_label": "3개월 -3.0%",
+    "change": -2.865,
+    "change_label": "3개월 -2.9%",
     "signal": 1,
     "note": "원화 강세 — 외국인 자금 유입에 우호",
     "info": false
@@ -356,7 +356,7 @@
    "지역은행 (KRE) vs S&P500: 3개월 상대 -0.5%p — 시장과 비슷"
   ]
  },
- "generated_at": "2026-11-24T05:30+00:00",
+ "generated_at": "2026-11-24T07:07+00:00",
  "sample": false,
  "missing": [],
  "charts": {
@@ -1092,7 +1092,7 @@
    [
     "2025-02-12",
     5917.7,
-    591.73
+    591.74
    ],
    [
     "2025-02-19",
